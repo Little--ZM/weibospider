@@ -65,10 +65,11 @@ def get_url_from_web(user_id):
         elif domain == '100505':
             user = get_user_detail(user_id, html)
             samefollow_uid = get_samefollow_uid()
-            if samefollow_uid:
+            if samefollow_uid.strip() != '':
+                samefollow_uid = samefollow_uid.split(',')
                 url = SAMEFOLLOW_URL.format(user_id)
                 isFanHtml = get_page(url, auth_level=2)
-                user.isFan = person.get_isFan(isFanHtml, samefollow_uid)
+                person.get_isFan(isFanHtml, samefollow_uid, user_id)
         # enterprise or service
         else:
             user = get_enterprise_detail(user_id, html)
@@ -102,14 +103,14 @@ def get_profile(user_id):
 
     if user:
         storage.info('user {id} has already crawled'.format(id=user_id))
-        SeedidsOper.set_seed_crawled(user_id, 1)
+        # SeedidsOper.set_seed_crawled(user_id, 1)
         is_crawled = 1
     else:
         user = get_url_from_web(user_id)
-        if user is not None:
-            SeedidsOper.set_seed_crawled(user_id, 1)
-        else:
-            SeedidsOper.set_seed_crawled(user_id, 2)
+        # if user is not None:
+        #     SeedidsOper.set_seed_crawled(user_id, 1)
+        # else:
+        #     SeedidsOper.set_seed_crawled(user_id, 2)
         is_crawled = 0
 
     return user, is_crawled
