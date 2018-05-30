@@ -9,28 +9,28 @@ from decorators import parse_decorator
 
 # 以下是通过认证企业主页进行解析
 @parse_decorator(0)
-def get_friends(html):
+def get_friends(html,url=None):
     cont = public.get_left(html)
     soup = BeautifulSoup(cont, 'html.parser')
     return int(soup.find_all('strong')[0].get_text())
 
 
 @parse_decorator(0)
-def get_fans(html):
+def get_fans(html,url=None):
     cont = public.get_left(html)
     soup = BeautifulSoup(cont, 'html.parser')
     return int(soup.find_all('strong')[1].get_text())
 
 
 @parse_decorator(0)
-def get_status(html):
+def get_status(html,url=None):
     cont = public.get_left(html)
     soup = BeautifulSoup(cont, 'html.parser')
     return int(soup.find_all('strong')[2].get_text())
 
 
 @parse_decorator('')
-def get_description(html):
+def get_description(html,url=None):
     soup = BeautifulSoup(html, "html.parser")
     scripts = soup.find_all('script')
     pattern = re.compile(r'FM.view\((.*)\)')

@@ -43,13 +43,21 @@ def parse_decorator(return_value):
     """
     def page_parse(func):
         @wraps(func)
-        def handle_error(*keys):
+        # add kargs support for debug
+        def handle_error(*keys, **kargs):
             try:
-                return func(*keys)
+                return func(*keys, **kargs)
             except Exception as e:
-                parser.error('Failed to parse the page, {} is raised, here are details:{}'.format(
-                    e, format_tb(e.__traceback__)
-                ))
+                if kargs.__contains__("url"):
+                    # print url for debug; if it's existed
+                    parser.error('Failed to parse the page,url is {};  {} is raised, here are details:{}'.format(
+                        kargs.get("url"),
+                        e, format_tb(e.__traceback__)
+                    ))
+                else:
+                    parser.error('Failed to parse the page, {} is raised, here are details:{}'.format(
+                        e, format_tb(e.__traceback__)
+                    ))
                 return return_value
 
         return handle_error

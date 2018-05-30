@@ -156,7 +156,7 @@ def get_level(html):
 
 
 @parse_decorator([])
-def get_fans_or_follows(html, uid, type):
+def get_fans_or_follows(html, uid, type, url = None):
     """
     Get fans or follows and store their relationships
     :param html: current page source

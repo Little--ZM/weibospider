@@ -29,12 +29,12 @@ def get_user_detail(user_id, html):
     return user
 
 
-def get_enterprise_detail(user_id, html):
+def get_enterprise_detail(user_id, html, url=None):
     user = User(user_id)
-    user.follows_num = enterprise.get_friends(html)
-    user.fans_num = enterprise.get_fans(html)
-    user.wb_num = enterprise.get_status(html)
-    user.description = enterprise.get_description(html).encode('gbk', 'ignore').decode('gbk')
+    user.follows_num = enterprise.get_friends(html,url=url)
+    user.fans_num = enterprise.get_fans(html,url=url)
+    user.wb_num = enterprise.get_status(html,url=url)
+    user.description = enterprise.get_description(html,url=url).encode('gbk', 'ignore').decode('gbk')
     return user
 
 
@@ -72,7 +72,7 @@ def get_url_from_web(user_id):
                 person.get_isFan(isFanHtml, samefollow_uid, user_id)
         # enterprise or service
         else:
-            user = get_enterprise_detail(user_id, html)
+            user = get_enterprise_detail(user_id, html, url=url)
 
         if user is None:
             return None
@@ -160,7 +160,7 @@ def get_fans_or_followers_ids(user_id, crawl_type, verify_type):
             if max_page > urls_length:
                 max_page = urls_length + 1
         # get ids and store relations
-        user_ids.extend(public.get_fans_or_follows(page, user_id, crawl_type))
+        user_ids.extend(public.get_fans_or_follows(page, user_id, crawl_type, url=url))
 
         cur_page += 1
 
