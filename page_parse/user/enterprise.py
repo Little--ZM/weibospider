@@ -9,32 +9,32 @@ from decorators import parse_decorator
 
 # 以下是通过认证企业主页进行解析
 @parse_decorator(0)
-def get_friends(soup,url=None):
+def get_friends(arr,url=None):
     # cont = public.get_left(html)
     # soup = BeautifulSoup(html, 'html.parser')
-    if soup.find_all('strong')[0].next_sibling.get_text() == u"关注":
-        return int(soup.find_all('strong')[0].get_text())
+    if arr[0].next_sibling.get_text() == u"关注":
+        return int(arr[0].get_text())
     else:
         return 0
 
 
 @parse_decorator(0)
-def get_fans(soup,url=None):
+def get_fans(arr,url=None):
     # cont = public.get_left(html)
     # soup = BeautifulSoup(html, 'html.parser')
-    if soup.find_all('strong')[1].next_sibling.get_text() == u"粉丝":
-        return int(soup.find_all('strong')[1].get_text())
+    if arr[1].next_sibling.get_text() == u"粉丝":
+        return int(arr[1].get_text())
     else:
         return 0
 
 
 
 @parse_decorator(0)
-def get_status(soup,url=None):
+def get_status(arr,url=None):
     # cont = public.get_left(html)
     # soup = BeautifulSoup(html, 'html.parser')
-    if soup.find_all('strong')[2].next_sibling.get_text() == u"微博":
-        return int(soup.find_all('strong')[2].get_text())
+    if arr[2].next_sibling.get_text() == u"微博":
+        return int(arr[2].get_text())
     else:
         return 0
 

@@ -44,9 +44,16 @@ def get_user_detail(user_id, html):
 def get_enterprise_detail(user_id, html, url=None):
     user = User(user_id)
     soup = BeautifulSoup(html, 'html.parser')
-    user.follows_num = enterprise.get_friends(soup,url=url)
-    user.fans_num = enterprise.get_fans(soup,url=url)
-    user.wb_num = enterprise.get_status(soup,url=url)
+
+    detail_arr = soup.find_all('strong')
+    if len(detail_arr) >= 3:
+        user.follows_num = enterprise.get_friends(detail_arr,url=url)
+        user.fans_num = enterprise.get_fans(detail_arr,url=url)
+        user.wb_num = enterprise.get_status(detail_arr,url=url)
+    else:
+        user.follows_num = 0
+        user.fans_num = 0
+        user.wb_num = 0
     user.description = enterprise.get_description(soup,url=url).encode('gbk', 'ignore').decode('gbk')
     return user
 
