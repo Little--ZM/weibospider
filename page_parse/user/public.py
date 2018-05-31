@@ -192,8 +192,12 @@ def get_fans_or_follows(html, uid, type, url = None):
                         isDuplicate = UserRelationOper.get_user_by_uid(uid, r, type)
                         if not isDuplicate:
                             n = re.search(patternFROM, follow.text)
-                            n = n.group(0)
-                            n = n[2:len(n)-2]
+                            # 存在没有关注来源的情况
+                            if n is not None:
+                                n = n.group(0)
+                                n = n[2:len(n)-2]
+                            else:
+                                n = ""
                             user_ids.append(r)
                             relations.append(UserRelation(uid, r, type, n))
             break
