@@ -3,6 +3,7 @@ import time
 import re
 import requests
 from urllib.parse import quote
+from bs4 import BeautifulSoup
 
 from db.models import User
 from logger import storage
@@ -20,21 +21,33 @@ SAMEFOLLOW_URL = 'https://weibo.com/p/100505{}/follow?relate=same_follow&amp;fro
 
 
 def get_user_detail(user_id, html):
-    user = person.get_detail(html, user_id)
+    soup = BeautifulSoup(html, "html.parser")
+    user = person.get_detail(soup, user_id)
     if user is not None:
         user.uid = user_id
-        user.follows_num = person.get_friends(html)
-        user.fans_num = person.get_fans(html)
-        user.wb_num = person.get_status(html)
+        cont = public.get_left(soup)
+
+        if cont == '':
+            user.follows_num = 0
+            user.fans_num = 0
+            user.wb_num = 0
+            return 0
+        else:
+            cont_soup = BeautifulSoup(cont, 'html.parser')
+            user.follows_num = person.get_friends(cont_soup)
+            user.fans_num = person.get_fans(cont_soup)
+            user.wb_num = person.get_status(cont_soup)
+
     return user
 
 
 def get_enterprise_detail(user_id, html, url=None):
     user = User(user_id)
-    user.follows_num = enterprise.get_friends(html,url=url)
-    user.fans_num = enterprise.get_fans(html,url=url)
-    user.wb_num = enterprise.get_status(html,url=url)
-    user.description = enterprise.get_description(html,url=url).encode('gbk', 'ignore').decode('gbk')
+    soup = BeautifulSoup(html, 'html.parser')
+    user.follows_num = enterprise.get_friends(soup,url=url)
+    user.fans_num = enterprise.get_fans(soup,url=url)
+    user.wb_num = enterprise.get_status(soup,url=url)
+    user.description = enterprise.get_description(soup,url=url).encode('gbk', 'ignore').decode('gbk')
     return user
 
 

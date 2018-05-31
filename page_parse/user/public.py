@@ -80,11 +80,11 @@ def get_headimg(html):
 
 
 @parse_decorator('')
-def get_left(html):
+def get_left(soup):
     """
     The left part of the page, which is public
     """
-    soup = BeautifulSoup(html, "html.parser")
+    # soup = BeautifulSoup(html, "html.parser")
     scripts = soup.find_all('script')
     pattern = re.compile(r'FM.view\((.*)\)')
     cont = ''
@@ -109,13 +109,13 @@ def get_left(html):
 
 
 @parse_decorator('')
-def get_right(html):
+def get_right(soup):
     """
     Parse the right part of user detail
     :param html: page source
     :return: the right part of user info page
     """
-    soup = BeautifulSoup(html, "html.parser")
+    # soup = BeautifulSoup(html, "html.parser")
     scripts = soup.find_all('script')
     pattern = re.compile(r'FM.view\((.*)\)')
     cont = ''
